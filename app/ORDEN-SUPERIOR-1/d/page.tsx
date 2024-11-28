@@ -18,18 +18,20 @@ interface ChartProps {
   yLabel: string;
 }
 
-const ordenSuperiorEjercicio1 = () => {
+const ordenSuperiorEjercicio4 = () => {
   // Datos para y(x)
   const solutionData: Point[] = Array.from({ length: 100 }, (_, i) => {
     const x = i / 10;
-    const y = Math.exp(x/2) + (x*x/8)*Math.exp(x/2);
+    // y = c₁e^(2x) + (2x² - 3x)e^(2x)
+    const y = Math.exp(2*x) + (2*x*x - 3*x)*Math.exp(2*x);
     return { x, y };
   });
 
   // Datos para y'(x)
   const derivativeData: Point[] = Array.from({ length: 100 }, (_, i) => {
     const x = i / 10;
-    const yPrime = (1/2)*Math.exp(x/2) + (x/4)*Math.exp(x/2) + (x*x/16)*Math.exp(x/2);
+    // y' = 2e^(2x) + (4x - 3)e^(2x) + (2x² - 3x)(2e^(2x))
+    const yPrime = 2*Math.exp(2*x) + (4*x - 3)*Math.exp(2*x) + (2*x*x - 3*x)*(2*Math.exp(2*x));
     return { x, y: yPrime };
   });
 
@@ -91,7 +93,7 @@ const ordenSuperiorEjercicio1 = () => {
       content: [
         {
           text: "Ecuación diferencial de segundo orden no homogénea:",
-          math: "4y'' - y = xe^{x/2}"
+          math: "y'' - 4y' + 4y = (12x^2 - 6x)e^{2x}"
         }
       ]
     },
@@ -100,18 +102,18 @@ const ordenSuperiorEjercicio1 = () => {
       content: [
         {
           text: "Ecuación característica:",
-          math: "4r^2 - 1 = 0"
+          math: "r^2 - 4r + 4 = 0"
         },
         {
           text: "Resolviendo:",
           math: [
-            "4r^2 = 1",
-            "r = \\pm \\frac{1}{2}"
+            "(r - 2)^2 = 0",
+            "r = 2 \\text{ (raíz doble)}"
           ]
         },
         {
           text: "Solución homogénea:",
-          math: "y_h = c_1e^{x/2} + c_2e^{-x/2}"
+          math: "y_h = (c_1 + c_2x)e^{2x}"
         }
       ]
     },
@@ -119,13 +121,13 @@ const ordenSuperiorEjercicio1 = () => {
       title: "Solución Particular",
       content: [
         {
-          text: "Proponemos:",
-          math: "y_p = (ax + b)e^{x/2}"
+          text: "Por el término no homogéneo, proponemos:",
+          math: "y_p = (ax^2 + bx)e^{2x}"
         },
         {
           text: "Sustituyendo y resolviendo:",
           math: [
-            "y_p = \\frac{x^2}{8}e^{x/2}"
+            "y_p = (2x^2 - 3x)e^{2x}"
           ]
         }
       ]
@@ -135,7 +137,7 @@ const ordenSuperiorEjercicio1 = () => {
       content: [
         {
           text: "Combinando soluciones:",
-          math: "y = c_1e^{x/2} + c_2e^{-x/2} + \\frac{x^2}{8}e^{x/2}"
+          math: "y = (c_1 + c_2x)e^{2x} + (2x^2 - 3x)e^{2x}"
         }
       ]
     },
@@ -144,17 +146,17 @@ const ordenSuperiorEjercicio1 = () => {
       content: [
         {
           text: "Aplicando y(0) = 1:",
-          math: "c_1 + c_2 = 1"
+          math: "c_1 = 1"
         },
         {
           text: "Aplicando y'(0) = 0:",
-          math: "\\frac{1}{2}c_1 - \\frac{1}{2}c_2 = 0"
+          math: "2c_1 + c_2 - 3 = 0"
         },
         {
-          text: "Resolviendo el sistema:",
+          text: "Resolviendo:",
           math: [
             "c_1 = 1",
-            "c_2 = 0"
+            "c_2 = 1"
           ]
         }
       ]
@@ -164,11 +166,11 @@ const ordenSuperiorEjercicio1 = () => {
       content: [
         {
           text: "La solución particular es:",
-          math: "y = e^{x/2} + \\frac{x^2}{8}e^{x/2}"
+          math: "y = (1 + x)e^{2x} + (2x^2 - 3x)e^{2x}"
         },
         {
-          text: "Su derivada es:",
-          math: "y' = \\frac{1}{2}e^{x/2} + \\frac{x}{4}e^{x/2} + \\frac{x^2}{16}e^{x/2}"
+          text: "Simplificando:",
+          math: "y = e^{2x} + (2x^2 - 2x)e^{2x}"
         }
       ]
     }
@@ -189,7 +191,7 @@ const ordenSuperiorEjercicio1 = () => {
             <div>
               <h3 className="font-semibold mb-2">Ecuación Diferencial:</h3>
               <div className="p-4 rounded-lg flex justify-center">
-                <BlockMath>{"4y'' - y = xe^{x/2}"}</BlockMath>
+                <BlockMath>{"y'' - 4y' + 4y = (12x^2 - 6x)e^{2x}"}</BlockMath>
               </div>
             </div>
             <div>
@@ -256,4 +258,4 @@ const ordenSuperiorEjercicio1 = () => {
   );
 };
 
-export default ordenSuperiorEjercicio1;
+export default ordenSuperiorEjercicio4;

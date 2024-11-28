@@ -46,6 +46,16 @@ const calculusData: CalculusData = {
     { path: "b", display: "EJERCICIO B)" },
     { path: "c", display: "EJERCICIO C)" },
     { path: "d", display: "EJERCICIO D)" },
+  ],
+  "ORDEN-SUPERIOR-2": [
+    { path: "a", display: "EJERCICIO A)" },
+    { path: "b", display: "EJERCICIO B)" },
+    { path: "c", display: "EJERCICIO C)" },
+    { path: "d", display: "EJERCICIO D)" },
+    { path: "e", display: "EJERCICIO E)" },
+    { path: "f", display: "EJERCICIO F)" },
+    { path: "g", display: "EJERCICIO G)" },
+    { path: "h", display: "EJERCICIO H)" },
   ]
 };
 
@@ -53,7 +63,8 @@ const displayNames: { [key: string]: string } = {
   "calculoDiferencial": "Hola",
   "calculoIntegral": "Cálculo Integral",
   "CAUCHY-EULER": "Cauchy-Euler",
-  "ORDEN-SUPERIOR-1": "Orden Superior 1"
+  "ORDEN-SUPERIOR-1": "Orden Superior 1",
+  "ORDEN-SUPERIOR-2": "Orden Superior 2"
 };
 
 interface MenuLinkButtonProps {

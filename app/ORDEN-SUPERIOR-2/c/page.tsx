@@ -18,18 +18,22 @@ interface ChartProps {
   yLabel: string;
 }
 
-const ordenSuperiorEjercicio1 = () => {
-  // Datos para y(x)
+const ordenSuperiorEjercicio7 = () => {
   const solutionData: Point[] = Array.from({ length: 100 }, (_, i) => {
-    const x = i / 10;
-    const y = Math.exp(x/2) + (x*x/8)*Math.exp(x/2);
+    const x = i / 10 + 0.5;
+    // y = c₁e^(5x) + c₂e^(-x)
+    // Con condiciones iniciales: y(1) = 0, y'(1) = 2
+    const c1 = 2/(5*Math.exp(5) + Math.exp(1));
+    const c2 = -2*5/(5*Math.exp(5) + Math.exp(1));
+    const y = c1*Math.exp(5*x) + c2*Math.exp(-x);
     return { x, y };
   });
 
-  // Datos para y'(x)
   const derivativeData: Point[] = Array.from({ length: 100 }, (_, i) => {
-    const x = i / 10;
-    const yPrime = (1/2)*Math.exp(x/2) + (x/4)*Math.exp(x/2) + (x*x/16)*Math.exp(x/2);
+    const x = i / 10 + 0.5;
+    const c1 = 2/(5*Math.exp(5) + Math.exp(1));
+    const c2 = -2*5/(5*Math.exp(5) + Math.exp(1));
+    const yPrime = 5*c1*Math.exp(5*x) - c2*Math.exp(-x);
     return { x, y: yPrime };
   });
 
@@ -90,52 +94,30 @@ const ordenSuperiorEjercicio1 = () => {
       title: "Ecuación Diferencial",
       content: [
         {
-          text: "Ecuación diferencial de segundo orden no homogénea:",
-          math: "4y'' - y = xe^{x/2}"
+          text: "Ecuación diferencial de segundo orden homogénea:",
+          math: "\\frac{d^2y}{dt^2} - 4\\frac{dy}{dt} - 5y = 0"
         }
       ]
     },
     {
-      title: "Solución de la Ecuación Homogénea",
+      title: "Solución de la Ecuación",
       content: [
         {
           text: "Ecuación característica:",
-          math: "4r^2 - 1 = 0"
+          math: "r^2 - 4r - 5 = 0"
         },
         {
           text: "Resolviendo:",
           math: [
-            "4r^2 = 1",
-            "r = \\pm \\frac{1}{2}"
+            "r = \\frac{4 \\pm \\sqrt{16 + 20}}{2}",
+            "r = \\frac{4 \\pm \\sqrt{36}}{2}",
+            "r = \\frac{4 \\pm 6}{2}",
+            "r_1 = 5, \\quad r_2 = -1"
           ]
         },
         {
-          text: "Solución homogénea:",
-          math: "y_h = c_1e^{x/2} + c_2e^{-x/2}"
-        }
-      ]
-    },
-    {
-      title: "Solución Particular",
-      content: [
-        {
-          text: "Proponemos:",
-          math: "y_p = (ax + b)e^{x/2}"
-        },
-        {
-          text: "Sustituyendo y resolviendo:",
-          math: [
-            "y_p = \\frac{x^2}{8}e^{x/2}"
-          ]
-        }
-      ]
-    },
-    {
-      title: "Solución General",
-      content: [
-        {
-          text: "Combinando soluciones:",
-          math: "y = c_1e^{x/2} + c_2e^{-x/2} + \\frac{x^2}{8}e^{x/2}"
+          text: "Por lo tanto, la solución general es:",
+          math: "y = c_1e^{5x} + c_2e^{-x}"
         }
       ]
     },
@@ -143,18 +125,21 @@ const ordenSuperiorEjercicio1 = () => {
       title: "Condiciones Iniciales",
       content: [
         {
-          text: "Aplicando y(0) = 1:",
-          math: "c_1 + c_2 = 1"
+          text: "Aplicando y(1) = 0:",
+          math: "c_1e^5 + c_2e^{-1} = 0"
         },
         {
-          text: "Aplicando y'(0) = 0:",
-          math: "\\frac{1}{2}c_1 - \\frac{1}{2}c_2 = 0"
+          text: "Aplicando y'(1) = 2:",
+          math: [
+            "y' = 5c_1e^{5x} - c_2e^{-x}",
+            "5c_1e^5 - c_2e^{-1} = 2"
+          ]
         },
         {
           text: "Resolviendo el sistema:",
           math: [
-            "c_1 = 1",
-            "c_2 = 0"
+            "c_1 = \\frac{2}{5e^5 + e}",
+            "c_2 = -\\frac{10}{5e^5 + e}"
           ]
         }
       ]
@@ -164,11 +149,7 @@ const ordenSuperiorEjercicio1 = () => {
       content: [
         {
           text: "La solución particular es:",
-          math: "y = e^{x/2} + \\frac{x^2}{8}e^{x/2}"
-        },
-        {
-          text: "Su derivada es:",
-          math: "y' = \\frac{1}{2}e^{x/2} + \\frac{x}{4}e^{x/2} + \\frac{x^2}{16}e^{x/2}"
+          math: "y = \\frac{2}{5e^5 + e}e^{5x} - \\frac{10}{5e^5 + e}e^{-x}"
         }
       ]
     }
@@ -189,13 +170,13 @@ const ordenSuperiorEjercicio1 = () => {
             <div>
               <h3 className="font-semibold mb-2">Ecuación Diferencial:</h3>
               <div className="p-4 rounded-lg flex justify-center">
-                <BlockMath>{"4y'' - y = xe^{x/2}"}</BlockMath>
+                <BlockMath>{"\\frac{d^2y}{dt^2} - 4\\frac{dy}{dt} - 5y = 0"}</BlockMath>
               </div>
             </div>
             <div>
               <h3 className="font-semibold mb-2">Condiciones Iniciales:</h3>
               <div className="p-4 rounded-lg flex justify-center">
-                <BlockMath>{"y(0) = 1, \\quad y'(0) = 0"}</BlockMath>
+                <BlockMath>{"y(1) = 0, \\quad y'(1) = 2"}</BlockMath>
               </div>
             </div>
           </div>
@@ -205,14 +186,14 @@ const ordenSuperiorEjercicio1 = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <Chart 
           data={solutionData} 
-          title="Solución y(x) con punto inicial y(0) = 1" 
-          point={{ x: 0, y: 1 }}
+          title="Solución y(x) con punto inicial y(1) = 0" 
+          point={{ x: 1, y: 0 }}
           yLabel="y(x)"
         />
         <Chart 
           data={derivativeData} 
-          title="Derivada y'(x) con punto inicial y'(0) = 0" 
-          point={{ x: 0, y: 0 }}
+          title="Derivada y'(x) con punto inicial y'(1) = 2" 
+          point={{ x: 1, y: 2 }}
           yLabel="y'(x)"
         />
       </div>
@@ -256,4 +237,4 @@ const ordenSuperiorEjercicio1 = () => {
   );
 };
 
-export default ordenSuperiorEjercicio1;
+export default ordenSuperiorEjercicio7;
