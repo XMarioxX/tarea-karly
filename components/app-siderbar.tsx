@@ -96,7 +96,7 @@ export function CalculusSidebar({ children }: CalculusSidebarProps) {
     return path;
   };
 
-  const MenuLinkButton = ({ href, path, display, isActive, onClick }: MenuLinkButtonProps) => (
+  const MenuLinkButton = ({ href, display, isActive, onClick }: MenuLinkButtonProps) => (
     <Link href={href} passHref>
       <SidebarMenuButton 
         asChild 
