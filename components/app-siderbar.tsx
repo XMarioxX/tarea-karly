@@ -91,6 +91,7 @@ export function CalculusSidebar({ children }: CalculusSidebarProps) {
     
     for (const [section, items] of Object.entries(calculusData)) {
       const item = items.find(item => item.path === path);
+      section;
       if (item) return item.display;
     }
     return path;
