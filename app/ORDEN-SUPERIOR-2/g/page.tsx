@@ -32,7 +32,7 @@ const ordenSuperiorEjercicio11 = () => {
 
   const derivativeData: Point[] = Array.from({ length: 100 }, (_, i) => {
     const x = i / 10;
-    const c1 = -1/20;
+    // const c1 = -1/20;
     const c2 = -1/10;
     const c3 = 1/4;
     const yPrime = -6*c2*Math.exp(-6*x) - 2*c3*Math.exp(-2*x);
