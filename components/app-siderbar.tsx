@@ -25,7 +25,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/toogleTheme";
 
-// Interfaces remain the same
 interface CalculusItem {
   path: string;
   display: string;
@@ -53,7 +52,9 @@ const calculusData: CalculusData = {
 
 const displayNames: { [key: string]: string } = {
   "calculoDiferencial": "Hola",
-  "calculoIntegral": "Cálculo Integral"
+  "calculoIntegral": "Cálculo Integral",
+  "CAUCHY-EULER": "Cauchy-Euler",
+  "ORDEN-SUPERIOR-1": "Orden Superior 1"
 };
 
 interface MenuLinkButtonProps {
@@ -96,15 +97,18 @@ export function CalculusSidebar({ children }: CalculusSidebarProps) {
     return path;
   };
 
+  const handleNavigation = (section: string, path: string) => {
+    setActivePath([section, path]);
+    setIsSidebarOpen(false);
+  };
+
   const MenuLinkButton = ({ href, display, isActive, onClick }: MenuLinkButtonProps) => (
     <Link href={href} passHref>
       <SidebarMenuButton 
         asChild 
         isActive={isActive} 
-        onClick={() => {
-          onClick();
-          setIsSidebarOpen(false);
-        }}
+        onClick={onClick}
+        className="w-full"
       >
         <div>{display}</div>
       </SidebarMenuButton>
@@ -119,10 +123,9 @@ export function CalculusSidebar({ children }: CalculusSidebarProps) {
     </BreadcrumbLink>
   );
 
-  // Changed to a regular function component
   const SidebarContentComponent = () => (
-    <>
-      <SidebarHeader>
+    <div className="h-full flex flex-col">
+      <SidebarHeader className="flex-shrink-0">
         <div className="flex items-center px-4">
           <div className="mt-2">
             <Heart size={48} />
@@ -133,20 +136,22 @@ export function CalculusSidebar({ children }: CalculusSidebarProps) {
           </div>
         </div>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="flex-1 overflow-y-auto">
         {Object.entries(calculusData).map(([section, items]) => (
           <SidebarGroup key={section}>
-            <SidebarGroupLabel>{getDisplayName(section)}</SidebarGroupLabel>
+            <SidebarGroupLabel className="px-4 py-2 text-lg font-medium">
+              {getDisplayName(section)}
+            </SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {items.map(({ path, display }) => (
-                  <SidebarMenuItem key={path}>
+                  <SidebarMenuItem key={path} className="px-2">
                     <MenuLinkButton 
                       href={generateUrl([section, path])}
                       path={path}
                       display={display}
                       isActive={activePath[1] === path}
-                      onClick={() => setActivePath([section, path])}
+                      onClick={() => handleNavigation(section, path)}
                     />
                   </SidebarMenuItem>
                 ))}
@@ -155,8 +160,7 @@ export function CalculusSidebar({ children }: CalculusSidebarProps) {
           </SidebarGroup>
         ))}
       </SidebarContent>
-      <SidebarRail />
-    </>
+    </div>
   );
 
   if (!mounted) {
@@ -165,12 +169,22 @@ export function CalculusSidebar({ children }: CalculusSidebarProps) {
 
   return (
     <div className="flex h-screen w-full bg-background">
+      {/* Mobile Sidebar Overlay */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden" 
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+      
       {/* Mobile Sidebar */}
-      <div className={`
-        fixed inset-0 z-50 bg-background transition-transform duration-300 lg:hidden
-        ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-      `}>
-        <div className="h-full w-64 border-r">
+      <aside 
+        className={`
+          fixed inset-y-0 left-0 z-50 w-64 bg-background transform transition-transform duration-300 ease-in-out lg:hidden
+          ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+        `}
+      >
+        <div className="flex h-full flex-col">
           <div className="flex justify-end p-4">
             <Button
               variant="ghost"
@@ -180,15 +194,15 @@ export function CalculusSidebar({ children }: CalculusSidebarProps) {
               <X className="h-6 w-6" />
             </Button>
           </div>
-          <Sidebar>
+          <div className="flex-1 overflow-y-auto">
             <SidebarContentComponent />
-          </Sidebar>
+          </div>
         </div>
-      </div>
+      </aside>
 
       {/* Desktop Sidebar */}
       <div className="hidden lg:block">
-        <Sidebar className="border-r">
+        <Sidebar className="h-screen border-r">
           <SidebarContentComponent />
         </Sidebar>
       </div>
