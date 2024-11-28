@@ -6,9 +6,32 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { BlockMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
 
+// Interfaces para los tipos
+interface Point {
+  x: number;
+  y: number;
+}
+
+interface ChartProps {
+  data: Point[];
+  title: string;
+  point?: Point;
+  yLabel: string;
+}
+
+interface MathContent {
+  text?: string;
+  math?: string | string[];
+}
+
+interface Step {
+  title: string;
+  content: MathContent[];
+}
+
 const DifferentialEquationSolution = () => {
   // Datos para la solución principal y = 2 - 2/x²
-  const solutionData = Array.from({ length: 90 }, (_, i) => {
+  const solutionData: Point[] = Array.from({ length: 90 }, (_, i) => {
     const x = (i + 10) / 10;
     return {
       x: x,
@@ -17,7 +40,7 @@ const DifferentialEquationSolution = () => {
   });
 
   // Datos para y'(x) = 4x^(-3)
-  const derivativeData = Array.from({ length: 90 }, (_, i) => {
+  const derivativeData: Point[] = Array.from({ length: 90 }, (_, i) => {
     const x = (i + 10) / 10;
     return {
       x: x,
@@ -25,10 +48,10 @@ const DifferentialEquationSolution = () => {
     };
   });
 
-  const point1 = { x: 1, y: 0 };
-  const point2 = { x: 1, y: 4 };
+  const point1: Point = { x: 1, y: 0 };
+  const point2: Point = { x: 1, y: 4 };
 
-  const Chart = ({ data, title, point, yLabel }) => (
+  const Chart: React.FC<ChartProps> = ({ data, title, point, yLabel }) => (
     <Card className="shadow-lg">
       <CardHeader>
         <CardTitle className="text-lg font-bold text-blue-600">{title}</CardTitle>
@@ -51,8 +74,8 @@ const DifferentialEquationSolution = () => {
                 stroke="#6b7280"
               />
               <Tooltip
-                formatter={(value) => value.toFixed(3)}
-                labelFormatter={(value) => `x = ${value.toFixed(2)}`}
+                formatter={(value: number) => value.toFixed(3)}
+                labelFormatter={(value: number) => `x = ${value.toFixed(2)}`}
                 contentStyle={{ backgroundColor: '#f8fafc', border: '1px solid #e2e8f0' }}
               />
               <Line
@@ -80,7 +103,7 @@ const DifferentialEquationSolution = () => {
     </Card>
   );
 
-  const steps = [
+  const steps: Step[] = [
     {
       title: "1. Identificación de la Ecuación",
       content: [
